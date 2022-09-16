@@ -1,5 +1,12 @@
 import React, { useState } from "react";
 import isPalindrome from "./utils/isPalindrome";
+import imageOne from "./components/images/imageOne.jpg"
+import imageTwo from "./components/images/imageTwo.jpg"
+import imageThree from "./components/images/imageThree.jpg"
+import imageFour from "./components/images/imageFour.jpg"
+import imageFive from "./components/images/imageFive.jpg"
+import imageSix from "./components/images/imageSix.jpg"
+import imageSeven from "./components/images/imageSeven.jpg"
 
 const Hangman = () => {
   ///the event has a files object on it sicne has been submitted
@@ -10,12 +17,9 @@ const Hangman = () => {
     //this function loads only after parsing the whole file
     reader.onload = function () {
       console.log("word ->", reader.result);
-      const arrWords = reader.result.split("\r\n")
-      //update the array of the words state
-      setWords((oldArray) => [...oldArray, reader.result.split("\r\n")]);
-      for (const word of arrWords ) {
-        console.log(word + "---->" + isPalindrome(word))
-      }
+      // add if else functionality later to choose dynamic formatting*******************************
+      const onlyPalindromesWords = reader.result.split("\r\n").filter(word => isPalindrome(word))
+      setWords(onlyPalindromesWords)
     };
   };
   const [words, setWords] = useState([]);
@@ -25,6 +29,9 @@ const Hangman = () => {
   return (
     <div>
       <input type="file" onChange={(e) => readFile(e)} />
+
+    <header>Hangman</header>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deleniti, sit.</p>
     </div>
   );
 };
