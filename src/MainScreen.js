@@ -29,9 +29,9 @@ const MainScreen = () => {
 
   return (
     <div>
-      <h1>please select a file</h1>
+      <h1>Please Select a File!</h1>
       <input type="file" onChange={(e) => readFile(e)} />
-      <ul>
+      <ul className="tilesWrap">
         {words.map((word) =>
           isPalindrome(word) ? (
             <li style={{ color: "green" }}>{word}</li>

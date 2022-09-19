@@ -107,10 +107,13 @@ const Hangman = ({ word }) => {
       <img src={images[mistakes]} />
 
       <div>Countdown: {counter}</div>
-      <button onClick={() => stopTime(timeout.current)}>stop timer</button>
+      <button id="pauseButton" onClick={() => stopTime(timeout.current)}>
+        PAUSE
+      </button>
       <p>{hiddenWord}</p>
       {alphabets.map((alphabet, index) => (
         <button
+          class="keyboard"
           key={index}
           onClick={() => {
             if (word.includes(alphabet)) {
@@ -125,9 +128,9 @@ const Hangman = ({ word }) => {
       ))}
 
       {result != "L" ? (
-        !hiddenWord.includes("_") && <p>youve won</p>
+        !hiddenWord.includes("_") && <p id="win">YOU'VE WON</p>
       ) : (
-        <p>youve lost</p>
+        <p id="lose">YOU'VE LOST!</p>
       )}
     </div>
   );
