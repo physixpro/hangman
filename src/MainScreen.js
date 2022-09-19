@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Hangman from "./Hangman";
 import isPalindrome from "./utils/isPalindrome";
+import { useSelector, useDispatch } from "react-redux";
+import { add } from "./features/words/wordSlice";
 
 const MainScreen = () => {
-  const [words, setWords] = useState([]);
+  //const [words, setWords] = useState([]);
+  const words = useSelector((store) => store.words.data);
+  console.log("STORE WORDS", words);
+  const dispatch = useDispatch();
 
   const readFile = async (e) => {
     e.preventDefault();
@@ -14,20 +19,13 @@ const MainScreen = () => {
       // console.log("word ->", reader.result);
       // add if else functionality later to choose dynamic formatting*******************************
       const allWords = reader.result.split("\r\n");
-      console.log(allWords);
-      setWords(allWords);
-      // const onlyPalindromesWords = reader.result
-      //   .split("\r\n")
-      //   .filter((word) => isPalindrome(word));
-      // setWords(onlyPalindromesWords);
+      dispatch(add(allWords));
     };
   };
 
-  const randomIndex = Math.floor(Math.random() * words.length);
-  console.log(randomIndex);
-  const palindromeWords = words.filter((word) => isPalindrome(word));
-  console.log("P", palindromeWords);
-  const word = words[randomIndex];
+  const randomIndex = words && Math.floor(Math.random() * words.length);
+  const palindromeWords = words && words.filter((word) => isPalindrome(word));
+  const word = palindromeWords[randomIndex];
 
   return (
     <div>
