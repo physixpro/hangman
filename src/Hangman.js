@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import isPalindrome from "./utils/isPalindrome";
 import imageOne from "./components/images/imageOne.jpg";
 import imageTwo from "./components/images/imageTwo.jpg";
@@ -7,20 +7,33 @@ import imageFour from "./components/images/imageFour.jpg";
 import imageFive from "./components/images/imageFive.jpg";
 import imageSix from "./components/images/imageSix.jpg";
 import imageSeven from "./components/images/imageSeven.jpg";
+import { clear } from "@testing-library/user-event/dist/clear";
 
 const Hangman = ({ duration = 10000 }) => {
+  const [result, setResult] = useState("");
+  const [counter, setCounter] = useState(10);
 
-  const [gameOverTimer, setGameOverTimer] = useState(true); 
+  let timeout = useRef(null)
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      if(setGameOverTimer(true) && !hiddenWord.includes("_") ){
-        setGameOverTimer(false)
-      };
-    },duration);
+    if (counter > 0) {
+      timeout.current = setTimeout(() => setCounter(counter - 1), 1000);
+    } else {
+      if (counter === 0) {
+        setResult("L");
+      }
+    }
+  }, [counter]);
 
-    return () => clearTimeout(timeout);
-  
-  }, [duration]);
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     setGameOverTimer(true)
+  //     // if (setGameOverTimer(true) && !hiddenWord.includes("_")) {
+  //     //   setGameOverTimer(false);
+  //     // }
+  //   });
+
+  //   return () => clearTimeout(timeout);
+  // }, [duration]);
 
   ///the event has a files object on it sicne has been submitted
   const readFile = async (e) => {
@@ -84,22 +97,29 @@ const Hangman = ({ duration = 10000 }) => {
   /*************************************  STATE FOR GUESSING CORRECT WORDS *******************************/
 
   const [correctLetter, setCorrectLetter] = useState([]);
-  
-/***************** This is my hidden word with blank spaces, which fills in letters till the word becomes visible ******* */
+
+  /***************** This is my hidden word with blank spaces, which fills in letters till the word becomes visible ******* */
   const hiddenWord = word
     .split("")
     .map((letter) => (correctLetter.includes(letter) ? letter : "_"))
     .join("");
-    console.log(word)
 
- 
-const over = () => {
-  setGameOverTimer(false) 
-  console.log(over)
-}
 
-  
-  
+  const stopTime = (t) => {
+    return clearTimeout(t);
+  };
+
+  const wordArr = "HANGMAN".split("")
+  console.log(wordArr)
+  let checker= (ar1,ar2) => ar1.every(r => ar2.includes(r))
+
+
+  useEffect(() => {
+    const checkerRes = checker(wordArr,correctLetter)
+    console.log(wordArr,correctLetter, checkerRes)
+    if(checkerRes){console.log("STOPPING THE TIME"); clearTimeout(timeout.current)}
+    
+  }, [correctLetter]);
 
   return (
     <div>
@@ -108,6 +128,8 @@ const over = () => {
       <header>Test Word: Hangman</header>
       <p>OUR HANGMAN IMAGE GOES HERE</p>
 
+      <div>Countdown: {counter}</div>
+      <button onClick={() => stopTime(timeout.current)}>stop timer</button>
       <p>{hiddenWord}</p>
       {alphabets.map((alphabet, index) => (
         <button
@@ -121,14 +143,12 @@ const over = () => {
           {alphabet}
         </button>
       ))}
-      {gameOverTimer? (
-        !hiddenWord.includes("_") && <p>youve won</p>): (<p>youve lost</p>)
-      }
-      {/* {gameOverTimer ? (
-        <p>Sorry, you lost!</p>
-      ) : ( 
-         !hiddenWord.includes("_") && <p>You've Won</p>
-      )} */}
+
+      {result != "L" ? (
+        !hiddenWord.includes("_") && <p>youve won</p>
+      ) : (
+        <p>youve lost</p>
+      )}
     </div>
   );
 };
