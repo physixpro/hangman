@@ -103,7 +103,7 @@ const Hangman = ({ word }) => {
 
   return (
     <div>
-      <header>HangMan version1.0</header>
+      <header>Test Word: Hangman</header>
       <img src={images[mistakes]} />
 
       <div>Countdown: {counter}</div>
