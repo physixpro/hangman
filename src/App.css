@@ -1,7 +1,7 @@
 *{
   background-color: #0ABFBC;
 }
-
+.head{color:rgb(41, 68, 156);font-size: 30px;}
 .App {
   text-align: center;
 }
@@ -349,3 +349,4 @@ ul li input[type=checkbox]:checked ~ i:after {
     transform: rotateX(0deg);
   }
 }
+
