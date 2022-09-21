@@ -102,10 +102,8 @@ const Hangman = ({ word }) => {
   }, [correctLetter]);
 
   const manhung = () => {
-    if (images[mistakes] === imageSeven) {
-      stopTime(timeout.current) && <p>You Lose!</p>;
-      console.log(manhung, "************** here is when it fires*********");
-    }
+    stopTime(timeout.current) && <p>You Lose!</p>;
+    console.log(manhung, "************** here is when it fires*********");
   };
 
   return (
@@ -133,11 +131,13 @@ const Hangman = ({ word }) => {
           {alphabet}
         </button>
       ))}
+      {images[mistakes] === imageSeven ? stopTime(timeout.current) : null}
       {images[mistakes] === imageSeven ? <p id="lose">You Lose!</p> : null}
+
       {result != "L" ? (
         !hiddenWord.includes("_") && <p id="win">YOU'VE WON</p>
       ) : (
-        <p id="lose">thanks for playing!</p>
+        <p id="lose">Time's up, you lose! </p>
       )}
     </div>
   );
