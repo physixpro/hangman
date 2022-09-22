@@ -39,7 +39,7 @@ const Hangman = ({ word }) => {
 
   /*********************************************** CHANGING CODE ************************************* */
 
-  // console.log(word);
+  // console.log(word);.log
   const alphabets = [
     "A",
     "B",
@@ -89,21 +89,31 @@ const Hangman = ({ word }) => {
   };
 
   const wordArr = word.toUpperCase().split("");
-  console.log(wordArr);
+  // console.log(wordArr);
   let checker = (ar1, ar2) => ar1.every((r) => ar2.includes(r));
 
   useEffect(() => {
     const checkerRes = checker(wordArr, correctLetter);
-    console.log(wordArr, correctLetter, checkerRes);
+    // console.log(wordArr, correctLetter, checkerRes);
     if (checkerRes) {
-      console.log("STOPPING THE TIME");
+      // console.log("STOPPING THE TIME");
       clearTimeout(timeout.current);
     }
   }, [correctLetter]);
 
-  const manhung = () => {
-    stopTime(timeout.current) && <p>You Lose!</p>;
-    console.log(manhung, "************** here is when it fires*********");
+  const [togglePause, setTogglePause] = useState(false);
+
+  // this function toggles state of true/false for the pause button
+  const changeToggle = () => {
+    if (togglePause === false) {
+      setTogglePause(true) && stopTime(timeout.current);
+    } else if (togglePause === true) {
+      if (counter > 0) {
+        timeout.current = setTimeout(() => setCounter(counter - 1), 1000);
+      }
+    }
+
+    console.log(togglePause, " <------------------ CHANGE TOGGLE FUNCTION");
   };
 
   return (
@@ -112,7 +122,12 @@ const Hangman = ({ word }) => {
       <img src={images[mistakes]} />
       {console.log(images[mistakes], "my images here")}
       <div>Countdown: {counter}</div>
-      <button id="pauseButton" onClick={() => stopTime(timeout.current)}>
+      <button
+        id="pauseButton"
+        onClick={() => {
+          changeToggle();
+        }}
+      >
         PAUSE
       </button>
       <p>{hiddenWord}</p>
@@ -131,9 +146,10 @@ const Hangman = ({ word }) => {
           {alphabet}
         </button>
       ))}
+
+      {togglePause ? stopTime(timeout.current) : togglePause}
       {images[mistakes] === imageSeven ? stopTime(timeout.current) : null}
       {images[mistakes] === imageSeven ? <p id="lose">You Lose!</p> : null}
-
       {result != "L" ? (
         !hiddenWord.includes("_") && <p id="win">YOU'VE WON</p>
       ) : (
