@@ -19,6 +19,7 @@ const MainScreen = () => {
       // console.log("word ->", reader.result);
       // add if else functionality later to choose dynamic formatting*******************************
       const allWords = reader.result.split("\r\n");
+
       dispatch(add(allWords));
     };
   };
@@ -32,11 +33,15 @@ const MainScreen = () => {
       <h1>Please Select a File!</h1>
       <input type="file" onChange={(e) => readFile(e)} />
       <ul className="tilesWrap">
-        {words.map((word) =>
+        {words.map((word, i) =>
           isPalindrome(word) ? (
-            <li style={{ color: "green" }}>{word}</li>
+            <li key={i} style={{ color: "green" }}>
+              {word}
+            </li>
           ) : (
-            <li style={{ color: "red" }}>{word}</li>
+            <li key={i} style={{ color: "red" }}>
+              {word}
+            </li>
           )
         )}
       </ul>

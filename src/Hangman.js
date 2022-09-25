@@ -114,12 +114,13 @@ const Hangman = ({ word }) => {
     }
 
     console.log(togglePause, " <------------------ CHANGE TOGGLE FUNCTION");
+    console.log(changeToggle, " <=============== Toggle function Fired!");
   };
 
   return (
     <div>
       <header>Hangman version.1.0.0.beta</header>
-      <img src={images[mistakes]} />
+      <img src={images[mistakes]} alt="" />
       {console.log(images[mistakes], "my images here")}
       <div>Countdown: {counter}</div>
       <button
@@ -133,7 +134,7 @@ const Hangman = ({ word }) => {
       <p>{hiddenWord}</p>
       {alphabets.map((alphabet, index) => (
         <button
-          class="keyboard"
+          className="keyboard"
           key={index}
           onClick={() => {
             if (word.includes(alphabet)) {
